@@ -29,9 +29,9 @@ Now lets get cracking - this video will explain everything:
 <video width='100%' controls>   <source src="intro_bday_vid.mp4" type="video/mp4"> </video>
 
 
+
 Thats right we will be going on a 2 day food crawl of London! Where we be going I hear you ask? Well, you can browse the overview map and the daily itineraries below :)
 
-# Overview 
 
 ```{r load data, include=FALSE}
 
@@ -57,6 +57,8 @@ data <- data %>%
                           " width= 100>"
                           
   ))
+
+
 ```
 
 
@@ -69,14 +71,44 @@ icoLst <- awesomeIconList(
     chinese = makeAwesomeIcon(text = fa("bowl-rice")),
     bakery = makeAwesomeIcon(text = fa("cookie-bite")),
     main = makeAwesomeIcon(text = fa("drumstick-bite")),
-    sandwich = makeAwesomeIcon(text = fa("burger"))
+    sandwich = makeAwesomeIcon(text = fa("burger")),
+    hotel = makeAwesomeIcon(text = fa("hotel"))
   )
 
 ```
 
-# Map
+```{r colour function}
 
-```{r map, echo = F}
+getColor <- function(data) {
+  sapply(data$day, function(day) {
+  if(day == "f") {
+    "#BF40BF"
+  } else {
+    "#00FFFF"
+  } })
+}
+```
+
+
+## Map
+
+```{r map, echo = FALSE, out.width= "100%"}
+
+#friday_route <- c("Covent Garden", "Old Spitalfields Market", "Liester Square")
+#saturday_route <- c("Borough Market Kitchen", "Peckham")
+
+fri_route_data <- data %>% 
+  group_by(location) %>% 
+  filter(day == "f" & icon != "hotel") 
+  #filter(location %in% friday_route)
+
+sat_route_data <- data %>% 
+  group_by(location) %>% 
+  filter(day == "s") 
+  #filter(location %in% saturday_route)
+
+
+# might need to manually mark it...
 
 leaflet(data = data) %>% 
   addTiles() %>%
@@ -84,6 +116,15 @@ leaflet(data = data) %>%
                     popup = ~content, 
                     label = ~as.character(name),
                     icon = ~icoLst[icon],
-                    group = ~icon)
-```
+                    group = ~icon) %>% 
+  addPolylines(lat = fri_route_data$lat, lng = fri_route_data$long, group = "Friday",
+               color = "#BF40BF", opacity = 0.7) %>% 
+  addPolylines(lat = sat_route_data$lat, lng = sat_route_data$long, group = "Saturday",
+               color = "#00FFFF", opacity = 0.7) %>% 
+  addLayersControl(
+    overlayGroups = c("Friday", "Saturday"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
 
+
+```
