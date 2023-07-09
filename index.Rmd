@@ -77,18 +77,6 @@ icoLst <- awesomeIconList(
 
 ```
 
-```{r colour function}
-
-getColor <- function(data) {
-  sapply(data$day, function(day) {
-  if(day == "f") {
-    "#BF40BF"
-  } else {
-    "#00FFFF"
-  } })
-}
-```
-
 
 ## Map
 
