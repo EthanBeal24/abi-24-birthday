@@ -1,0 +1,89 @@
+---
+title: "Happy Birthday Abi!"
+output: 
+  prettydoc::html_pretty:
+    theme: hpstr
+    toc: no
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(leaflet)
+library(dplyr)
+library(readr)
+library(fontawesome)
+library(googlesheets4)
+```
+
+
+You are 24 today!
+
+Now I know you want to know what the plan os for your birthday weekend, so I have made this little page to explain it all! And you can refer to it throughout the weekend!
+
+Now lets get cracking - this video will explain everything:
+
+
+<video width='100%' controls>   <source src="intro_bday_vid.mp4" type="video/mp4"> </video>
+
+
+Thats right we will be going on a 2 day food crawl of London! Where we be going I hear you ask? Well, you can browse the overview map and the daily itineraries below :)
+
+# Overview 
+
+```{r load data, include=FALSE}
+
+#data <- read_csv("food_tour_data.csv")
+
+#Read google sheets data into R
+data <- read_sheet("https://docs.google.com/spreadsheets/d/1SYMhCFlWBndnX83yumbMijqn4B9Ur9gFtsVYO-KrNFg/edit?usp=sharing")
+```
+
+
+```{r add content, include=FALSE}
+data <- data %>% 
+  mutate(content =  paste(sep = "",
+                          "<b><a href='", url, "'>", 
+                          name, "</a></b>",
+                          "<br/>",
+                          location, 
+                          "<br/>",
+                          notes,
+                          "<br/>",
+                          "<img src = ",
+                          image,
+                          " width= 100>"
+                          
+  ))
+```
+
+
+```{r create icons, include=FALSE}
+icoLst <- awesomeIconList(
+    dessert = makeAwesomeIcon(text = fa("ice-cream")),
+    italian = makeAwesomeIcon(text = fa("pizza-slice")),
+    coffee = makeAwesomeIcon(text = fa("mug-hot")),
+    alcohol = makeAwesomeIcon(text = fa("martini-glass-citrus")),
+    chinese = makeAwesomeIcon(text = fa("bowl-rice")),
+    bakery = makeAwesomeIcon(text = fa("cookie-bite")),
+    main = makeAwesomeIcon(text = fa("drumstick-bite")),
+    sandwich = makeAwesomeIcon(text = fa("burger"))
+  )
+
+```
+
+# Map
+
+```{r map, echo = F}
+
+leaflet(data = data) %>% 
+  addTiles() %>%
+  addAwesomeMarkers(~long, ~lat, 
+                    popup = ~content, 
+                    label = ~as.character(name),
+                    icon = ~icoLst[icon],
+                    group = ~icon)
+```
+
