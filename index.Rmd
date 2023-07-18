@@ -72,7 +72,10 @@ icoLst <- awesomeIconList(
     bakery = makeAwesomeIcon(text = fa("cookie-bite")),
     main = makeAwesomeIcon(text = fa("drumstick-bite")),
     sandwich = makeAwesomeIcon(text = fa("burger")),
-    hotel = makeAwesomeIcon(text = fa("hotel"))
+    hotel = makeAwesomeIcon(text = fa("hotel")),
+    shopping = makeAwesomeIcon(text = fa("cart-shopping")),
+    tswizzle = makeAwesomeIcon(text = fa("music")),
+    sightseeing = makeAwesomeIcon(text = fa("eye"))
   )
 
 ```
@@ -87,12 +90,15 @@ icoLst <- awesomeIconList(
 
 fri_route_data <- data %>% 
   group_by(location) %>% 
-  filter(day == "f" & icon != "hotel") 
+  filter(day == "f") %>% 
+  filter(name != "ibis hotel") %>% 
+  arrange(-desc(order))
   #filter(location %in% friday_route)
 
 sat_route_data <- data %>% 
   group_by(location) %>% 
-  filter(day == "s") 
+  filter(day == "s") %>% 
+  arrange(-desc(order))
   #filter(location %in% saturday_route)
 
 
