@@ -19,7 +19,7 @@ library(googlesheets4)
 ```
 
 
-You are 24 today!
+### You are 24 today!
 
 Now I know you want to know what the plan os for your birthday weekend, so I have made this little page to explain it all! And you can refer to it throughout the weekend!
 
@@ -27,6 +27,8 @@ Now lets get cracking - this video will explain everything:
 
 
 <video width='100%' controls>   <source src="intro_bday_vid.mp4" type="video/mp4"> </video>
+
+<img src="party_time.png" alt="Party" width='100%'/>
 
 
 
@@ -122,3 +124,11 @@ leaflet(data = data) %>%
 
 
 ```
+
+
+### There is one final surprise, and its in another video!
+
+<video width='100%' controls>   <source src="birthday_surprise.mp4" type="video/mp4"> </video>
+
+
+
